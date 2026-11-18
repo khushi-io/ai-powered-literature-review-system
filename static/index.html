@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Literature Review Agent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--iv:#EAE6DE;--card:#F7F4EE;--line:#D6D0C3;--blue:#226192;--bd:#184B72;--tint:#DCE7F0;--ink:#1F2A36;--mut:#5F6B77;--ok:#3F7D5A;--warn:#B7791F;--bad:#B5453A;--b2:#B5603A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--iv);color:var(--ink);font:15px/1.45 Inter,"Segoe UI","Liberation Sans",Arial,sans-serif;display:flex;height:100vh;overflow:hidden}
+.ser,h1,h3,.brand{font-family:"Source Serif 4",Georgia,"Liberation Serif",serif}
+.side{width:250px;background:var(--blue);color:#DCE8F2;padding:26px 16px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.brand{font-weight:700;font-size:22px;line-height:1.15;color:#fff;padding:0 10px 24px}.brand small{display:block;font:500 12px Inter,"Segoe UI",sans-serif;opacity:.8;margin-top:7px}
+.nav{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:10px;font-weight:500;cursor:pointer;border:0;background:none;color:inherit;font-size:15px;text-align:left;width:100%;font-family:inherit}
+.nav:hover{background:rgba(255,255,255,.12)}.nav.on{background:var(--iv);color:var(--blue);font-weight:700}
+.nav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.priv{margin-top:auto;background:rgba(255,255,255,.13);border-radius:12px;padding:14px;font-size:12.5px;line-height:1.4}.priv b{color:#fff}
+.main{flex:1;padding:28px 40px 40px;overflow-y:auto;min-width:0}
+section[hidden],[hidden]{display:none!important}
+h1{font-weight:700;font-size:31px;line-height:1.15;color:var(--bd)}
+h3{font-weight:700;font-size:18px;margin-bottom:12px;color:var(--bd)}
+.sub{color:var(--mut);margin:6px 0 20px;font-size:16px;max-width:900px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.btn{display:inline-block;background:var(--blue);color:#fff;border:0;border-radius:12px;padding:12px 22px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--bd)}.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.o{background:transparent;color:var(--blue);border:1.6px solid var(--blue);padding:10.5px 20px}.btn.o:hover{background:var(--tint)}
+.chip{display:inline-block;padding:3px 11px;border-radius:99px;background:var(--tint);color:var(--bd);font-size:12.5px;font-weight:600;margin:0 6px 4px 0}
+.chip.g{background:#DCEBE1;color:#2B5C40}.chip.w{background:#F3E4C8;color:#7A5210}.chip.r{background:#F2D9D4;color:#8A2F26}
+button.chip{border:0;cursor:pointer;font-family:inherit}button.chip:hover{background:#C9DAE9}
+.row{display:flex;gap:18px}.col{flex:1;min-width:0}.mut{color:var(--mut)}.sm{font-size:13px}
+.bar{height:9px;border-radius:6px;background:#DDD7CA;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);border-radius:6px}
+.in{background:#fff;border:1.6px solid #BFC7CF;border-radius:11px;padding:11px 14px;font:inherit;color:var(--ink)}.in:focus{outline:0;border-color:var(--blue)}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:11px 0;border-bottom:1px solid var(--line)}.opt:last-child{border:0}
+.opt b{font-size:14.5px}.opt span{display:block;color:var(--mut);font-size:12.5px;margin-top:1px;font-weight:400}
+.ctl{display:flex;align-items:center;gap:12px;width:250px;justify-content:flex-end}.val{color:var(--blue);min-width:38px;text-align:right}
+input[type=range]{accent-color:var(--blue);width:170px}
+input.tg{appearance:none;-webkit-appearance:none;width:44px;height:25px;border-radius:14px;background:#BDB7AA;position:relative;cursor:pointer;flex-shrink:0;transition:.15s}
+input.tg:checked{background:var(--blue)}input.tg:after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.15s}input.tg:checked:after{left:22px}
+.step{display:flex;gap:11px;margin-bottom:13px;align-items:flex-start}.step em{font-style:normal;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px}
+.step b{display:block;font-size:14.5px}.step span{font-size:12.8px;color:var(--mut)}
+table{border-collapse:collapse;width:100%}td,th{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}th{color:var(--mut);font-weight:600;font-size:12.5px}
+.stp{display:flex;padding:16px 10px}.stp>div{flex:1;text-align:center}.stp .dot{width:30px;height:30px;border-radius:50%;background:#CFC9BC;color:#fff;margin:0 auto 6px;font-weight:700;line-height:30px}
+.stp .done .dot{background:var(--ok)}.stp .running .dot{background:var(--blue);animation:pu 1s infinite}.stp .error .dot{background:var(--bad)}@keyframes pu{50%{opacity:.45}}
+.tabs{display:flex;gap:26px;border-bottom:2px solid var(--line);margin:16px 0}.tabs button{background:none;border:0;padding:8px 2px;font:600 15px Inter,"Segoe UI",sans-serif;color:var(--mut);cursor:pointer;margin-bottom:-2px;border-bottom:3px solid transparent}
+.tabs button.on{color:var(--blue);border-color:var(--blue)}
+.big{background:var(--blue);color:#fff;border:0;text-align:center}.big .n{font:700 64px/1.1 "Source Serif 4",Georgia,serif;margin:6px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.meter .t{display:flex;justify-content:space-between;gap:8px}.meter .n{font:700 22px "Source Serif 4",Georgia,serif;color:var(--bd)}
+.hrow{display:flex;align-items:center;gap:16px;padding:14px 20px;margin-bottom:10px}.hrow.sel{border:2px solid var(--blue);background:#EEF3F8}
+.ck{width:22px;height:22px;border-radius:6px;border:2px solid var(--blue);background:#fff;color:#fff;text-align:center;line-height:18px;font-weight:700;cursor:pointer;flex-shrink:0}.hrow.sel .ck{background:var(--blue)}
+.cbar{position:sticky;bottom:0;background:var(--bd);color:#fff;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:16px;margin-top:14px}
+.err{background:#F2D9D4;color:#8A2F26;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-weight:600}
+.hyp{border-left:4px solid var(--blue);padding:4px 0 4px 16px;margin-bottom:18px}.hyp .tx{font:16.5px/1.5 "Source Serif 4",Georgia,serif}
+.lnk{color:var(--bd);font:600 16px "Source Serif 4",Georgia,serif;text-decoration:underline}.how dt{font-weight:700;font-size:13px;margin-top:12px}.how dd{font-size:14px}
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}summary{cursor:pointer;font-weight:700;font-size:14px}
+</style></head><body>
+<div class="side"><div class="brand">Literature Review<br>Agent<small>Find, check and understand research</small></div>
+<button class="nav" data-v="new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New review</button>
+<button class="nav" data-v="res"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 15v-3M12 15V9M16 15v-5"/></svg>Results</button>
+<button class="nav" data-v="his"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>Search history</button>
+<button class="nav" data-v="cmp"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="2"/><rect x="14" y="5" width="7" height="14" rx="2"/></svg>Compare searches</button>
+<button class="nav" data-v="set"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Settings</button>
+<button class="nav" data-v="hlp"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.7 9.5a2.4 2.4 0 1 1 3.4 2.2c-.7.4-1.1.8-1.1 1.6M12 16.5v.1"/></svg>Help &amp; guide</button>
+<div class="priv"><b>Private and free to use.</b><br>Runs on your computer. No AI cloud service; only paper data is fetched from OpenAlex.</div></div>
+<div class="main">
+
+<section id="v-new"><h1>Start a literature review</h1><div class="sub">Type a research topic. Six helper programs (agents) will find papers, summarise them, check every claim and suggest research ideas.</div>
+<div class="card" style="padding:18px"><div class="row" style="align-items:center"><input id="topic" class="in col ser" style="font-size:20px;border-color:var(--blue)" placeholder="e.g. machine learning for crop yield prediction"><button id="run" class="btn" style="padding:15px 30px;font-size:16px">Run review &nbsp;→</button></div>
+<div class="sm mut" style="margin-top:12px">Try an example: <button class="chip ex">Ethical AI</button><button class="chip ex">Cybersecurity awareness in India</button><button class="chip ex">Machine learning for traffic congestion</button></div></div>
+<div class="row" style="margin-top:18px"><div class="card col" style="flex:1.25"><div style="display:flex;justify-content:space-between;align-items:baseline"><h3>Review options</h3><span class="sm mut">Always visible · applies to your next run</span></div><div class="opts"></div><div style="margin-top:12px"><button class="btn o reset">Reset to defaults</button></div></div>
+<div class="col" style="flex:.9"><div class="card"><h3>What happens when you press Run</h3>
+<div class="step"><em>1</em><div><b>Find papers</b><span>Searches the open OpenAlex library</span></div></div><div class="step"><em>2</em><div><b>Group and summarise</b><span>Sorts papers into themes, picks key sentences</span></div></div><div class="step"><em>3</em><div><b>Check every claim</b><span>Removes sentences the papers do not support</span></div></div><div class="step"><em>4</em><div><b>Suggest research ideas</b><span>Built from the important terms found</span></div></div><div class="step"><em>5</em><div><b>Check novelty</b><span>Looks for similar published work</span></div></div><div class="step" style="margin:0"><em>6</em><div><b>Score the quality</b><span>Explains strengths and weak points</span></div></div></div>
+<div class="card" style="margin-top:14px;padding:14px 22px"><b class="sm">Usual time:</b> <span class="sm mut">about 30 seconds. Repeated topics open instantly.</span></div></div></div></section>
+
+<section id="v-res" hidden><div class="sm mut" style="margin-bottom:6px;cursor:pointer" id="back">← New review</div>
+<div id="err" class="err" hidden></div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px"><div><h1 id="rt">Results</h1><div id="rc" style="margin-top:9px"></div></div><div style="display:flex;gap:10px;flex-shrink:0"><button class="btn o ex-b" data-f="docx">Export Word</button><button class="btn ex-b" data-f="pdf">Export PDF</button></div></div>
+<div class="sm mut" id="exs" style="text-align:right;min-height:18px"></div>
+<div class="card stp" id="stp" style="margin-top:6px"></div>
+<div class="tabs"><button data-t="ov" class="on">Overview</button><button data-t="th">Themes</button><button data-t="id">Research ideas</button><button data-t="pa">Papers &amp; links</button><button data-t="qu">Quality report</button></div>
+<div id="p-ov" class="pane"></div><div id="p-th" class="pane" hidden></div><div id="p-id" class="pane" hidden></div><div id="p-pa" class="pane" hidden></div><div id="p-qu" class="pane" hidden></div></section>
+
+<section id="v-his" hidden><h1>Search history</h1><div class="sub">Every finished review is saved automatically. Open one to see it again instantly, or tick two to compare.</div>
+<div class="row" style="margin-bottom:16px;align-items:center"><input id="hq" class="in col" placeholder="Search by topic or setting…"><button class="btn o" id="hclear">Clear all history</button></div><div id="hmsg" class="sm mut" style="margin-bottom:10px"></div><div id="hlist"></div>
+<div class="cbar" id="cbar" hidden><div style="flex:1"><b id="cn"></b><div class="sm" id="ct" style="opacity:.85"></div></div><button class="btn" id="cgo" style="background:#EAE6DE;color:var(--bd)">Compare these two →</button></div></section>
+
+<section id="v-cmp" hidden><h1>Compare two searches</h1><div class="sub">Built from your two saved searches. Nothing is searched or calculated again.</div><div id="cbody"><div class="card mut">Go to <b>Search history</b>, tick two searches and press “Compare these two”.</div></div></section>
+
+<section id="v-set" hidden><h1>Settings</h1><div class="sub">Plain-language controls for how the review is done. They apply to your next review.</div>
+<div class="row"><div class="col"><div class="card"><h3>Finding papers and ideas</h3><div class="opts"></div><div style="margin-top:12px"><button class="btn o reset">Reset to defaults</button></div></div></div>
+<div class="col"><div class="card" style="margin-bottom:14px"><h3>Checking claims</h3><div class="sm mut" style="margin:-8px 0 8px">Fixed for consistent results</div>
+<div class="opt"><div><b>Sentences checked per claim</b><span>Closest source sentences compared</span></div><b>5</b></div><div class="opt"><div><b>Approval level</b><span>Share of claims that must be supported</span></div><b>70%</b></div><div class="opt"><div><b>Repair rounds</b><span>Maximum clean-up attempts</span></div><b>3</b></div></div>
+<div class="card"><h3>Appearance</h3><div class="opt"><div><b>Text size</b><span>Larger text is easier to read</span></div><div><button class="chip tz" data-z="1" style="background:var(--blue);color:#fff">Normal</button><button class="chip tz" data-z="1.15">Large</button></div></div></div></div></div></section>
+
+<section id="v-hlp" hidden><h1>Help &amp; guide</h1><div class="sub">Everything you need to read the results.</div><div class="card" style="max-width:860px"><dl class="how">
+<dt>How do I start?</dt><dd>Open “New review”, type a topic and press “Run review”. Options are on the same screen.</dd>
+<dt>What is the quality score?</dt><dd>A number from 0 to 1 that averages four checks: coverage (how much of the papers the summary uses), specificity (how concrete the research ideas are), support (how many sentences the sources back up) and novelty (how few ideas already exist). 0.75 or more is strong.</dd>
+<dt>What does “claims verified” mean?</dt><dd>Every summary sentence was compared with the papers by a language-inference model. Sentences the papers do not support are removed.</dd>
+<dt>Is a “no close match found” idea really new?</dt><dd>Not necessarily. Only the OpenAlex library is searched, so please still check the literature yourself.</dd>
+<dt>Where are my reports?</dt><dd>In the “exports” folder of the project after pressing Export Word or Export PDF.</dd>
+<dt>Is anything sent to an AI service?</dt><dd>No. All analysis runs on your computer; only paper searches go to OpenAlex.</dd></dl></div></section>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const f2=v=>v==null?"n/a":Number(v).toFixed(2),safe=u=>/^https?:\/\//i.test(String(u||"").trim())?String(u).trim():"";
+const pl=(n,w,p)=>`${n} ${n===1?w:(p||w+"s")}`,lab=l=>l==="strong"?"g":l==="fair"?"w":"r";
+const RANGES=[["max_papers","Papers to read","More papers give a wider review but take longer",3,30,1],["fetch_limit","Search width","How many papers to look at before choosing the best",5,50,1],["min_relevance","How closely related","Higher = only papers very close to your topic",0,0.6,0.05],["num_hypotheses","Research ideas to suggest","Each idea is checked against published work",1,6,1]];
+const STG=[["retriever","Find papers"],["synthesizer","Summarise"],["critic","Verify claims"],["hypothesis","Ideas"],["novelty","Novelty"],["evaluator","Score"]];
+let S={},DEF={},cur=null,poll=null,hist=[],picks=[];
+const fd=s=>{const d=new Date(String(s).split(".")[0]);return isNaN(d)?s:d.toLocaleDateString(undefined,{day:"2-digit",month:"short",year:"numeric"})+", "+d.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"})};
+
+function show(v){$$("section").forEach(s=>s.hidden=s.id!=="v-"+v);$$(".nav").forEach(n=>n.classList.toggle("on",n.dataset.v===v));$(".main").scrollTop=0;if(v==="his")loadHist();if(v==="new"||v==="set")renderOpts()}
+$$(".nav").forEach(n=>n.onclick=()=>show(n.dataset.v));$("#back").onclick=()=>show("new");
+
+/* ---------- options (shown on New review AND Settings) ---------- */
+function renderOpts(){const h=RANGES.map(([k,l,t,mn,mx,st])=>`<div class="opt"><div><b>${l}</b><span>${t}</span></div><div class="ctl"><input type="range" data-k="${k}" min="${mn}" max="${mx}" step="${st}" value="${S[k]}"><b class="val">${S[k]}</b></div></div>`).join("")+
+`<div class="opt"><div><b>Publication years</b><span>Leave empty to include every year</span></div><div class="ctl"><input class="in" style="width:92px;padding:8px 10px" type="number" data-k="year_from" placeholder="From" value="${S.year_from??""}">–<input class="in" style="width:92px;padding:8px 10px" type="number" data-k="year_to" placeholder="To" value="${S.year_to??""}"></div></div>`+
+`<div class="opt"><div><b>Only the last 3 years</b><span>Focus on very recent work</span></div><input class="tg" type="checkbox" data-k="recent_only" ${S.recent_only?"checked":""}></div>`+
+`<div class="opt"><div><b>Only free-to-read (open access) papers</b><span>Every paper can be opened without a subscription</span></div><input class="tg" type="checkbox" data-k="open_access_only" ${S.open_access_only?"checked":""}></div>`;
+$$(".opts").forEach(e=>e.innerHTML=h)}
+document.addEventListener("input",e=>{const t=e.target,k=t.dataset&&t.dataset.k;if(!k)return;
+ if(t.type==="checkbox")S[k]=t.checked;else if(t.type==="range"){S[k]=k==="min_relevance"?parseFloat(t.value):parseInt(t.value,10);const v=t.parentElement.querySelector(".val");if(v)v.textContent=S[k]}else S[k]=t.value?parseInt(t.value,10):null});
+$$(".reset").forEach(b=>b.onclick=()=>{S={...DEF};renderOpts()});
+$$(".tz").forEach(b=>b.onclick=()=>{document.body.style.zoom=b.dataset.z;$$(".tz").forEach(x=>{x.style.background=x===b?"var(--blue)":"";x.style.color=x===b?"#fff":""})});
+$$(".ex").forEach(b=>b.onclick=()=>{$("#topic").value=b.textContent;$("#topic").focus()});
+fetch("/api/settings/defaults").then(r=>r.json()).then(d=>{DEF=d.defaults;S={...DEF};renderOpts()});
+
+/* ---------- running a review ---------- */
+function paint(st){$("#stp").innerHTML=STG.map(([k,l],i)=>{const s=(st&&st[k])||{status:"idle",message:""};return `<div class="${s.status}"><div class="dot">${s.status==="done"?"✓":s.status==="error"?"!":i+1}</div><b class="sm">${l}</b><div class="sm mut">${esc(s.message)||"&nbsp;"}</div></div>`}).join("")}
+function err(m){const e=$("#err");e.hidden=!m;e.textContent=m||""}
+async function run(){const topic=$("#topic").value.trim();if(!topic)return $("#topic").focus();
+ $("#run").disabled=true;$("#run").textContent="Running…";err("");cur=null;$$(".pane").forEach(p=>p.innerHTML="");$("#rt").textContent=topic;$("#rc").innerHTML='<span class="chip">Review in progress…</span>';paint({});show("res");
+ const r=await fetch("/api/run",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({topic,force_fresh:false,settings:S})});
+ if(!r.ok){const d=await r.json();err(d.error||"Could not start the review.");$("#run").disabled=false;$("#run").textContent="Run review  →";return}
+ poll=setInterval(tick,700)}
+async function tick(){try{const d=await (await fetch("/api/status")).json();paint(d.stages);if(d.error)err(d.error);
+ if(!d.running){clearInterval(poll);poll=null;$("#run").disabled=false;$("#run").textContent="Run review  →";if(d.result)render(d.result);else $("#rc").innerHTML=""}}catch(e){console.error(e)}}
+$("#run").onclick=run;$("#topic").addEventListener("keydown",e=>{if(e.key==="Enter")run()});
+$$(".ex-b").forEach(b=>b.onclick=async()=>{$("#exs").textContent="Exporting…";try{const r=await fetch("/api/export",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({format:b.dataset.f})});const d=await r.json();$("#exs").textContent=r.ok?"Saved: "+d.filename+" (in the exports folder)":(d.error||"Export failed.")}catch(e){$("#exs").textContent="Export failed."}});
+$$(".tabs button").forEach(b=>b.onclick=()=>{$$(".tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".pane").forEach(p=>p.hidden=p.id!=="p-"+b.dataset.t)});
+
+/* ---------- results ---------- */
+const meter=(t,p,d)=>p?`<div class="card meter" style="padding:15px 18px"><div class="t"><b class="sm">${t}</b><span class="n">${f2(p.score)}</span></div><div class="bar" style="margin:7px 0"><i style="width:${p.score*100}%;background:${p.label==="strong"?"var(--blue)":p.label==="fair"?"var(--warn)":"var(--bad)"}"></i></div><div class="sm mut">${esc(d)}</div></div>`:`<div class="card meter" style="padding:15px 18px;opacity:.55"><div class="t"><b class="sm">${t}</b><span class="n">n/a</span></div><div class="sm mut" style="margin-top:14px">${esc(d)}</div></div>`;
+function render(r){cur=r;const ev=r.evaluation,th=r.themes||{},ids=Object.keys(th);
+ $("#rt").textContent=r.topic;$("#rc").innerHTML=`<span class="chip">${pl(r.num_papers,"paper")}</span><span class="chip">${pl(ids.length,"theme")}</span><span class="chip ${r.critic_approved?"g":"w"}">${r.critic_approved?"All claims verified":"Best effort"}</span>`;
+ const ov=ev&&ev.overall&&ev.overall.score!=null?ev.overall:null,cv=ev&&ev.coverage,sp=ev&&ev.specificity,su=ev&&ev.support,no=ev&&ev.novelty;
+ const top=(r.hypotheses||[])[0],nv=top&&(r.novelty_check||[]).find(n=>n.hypothesis_id===top.id);
+ $("#p-ov").innerHTML=`<div class="row"><div style="width:236px;flex-shrink:0"><div class="card big" style="height:100%"><div class="sm" style="opacity:.85">Overall quality</div><div class="n">${ov?f2(ov.score):"n/a"}</div>${ov?`<span class="chip ${lab(ov.label)}" style="font-size:13px">${ov.label.toUpperCase()}</span>`:""}<div class="sm" style="margin-top:14px;opacity:.85">Average of coverage, specificity, support and novelty</div></div></div>
+ <div class="grid2" style="flex:1.35">${meter("Coverage",cv,cv?`${cv.papers_represented} of ${cv.papers_total} papers used in the summary`:"No papers to score")}${meter("Specificity",sp,sp&&sp.flagged_terms.length?"Generic words: "+sp.flagged_terms.join(", "):"No generic key words")}${meter("Support",su,"Share of sentences backed by the sources")}${meter("Novelty",no,no?(no.close_matches?pl(no.close_matches,"idea")+" may overlap published work":"None of the ideas overlap published work"):"Novelty was not checked")}</div>
+ <div class="card col" style="flex:.95"><h3>What could be better</h3>${ev&&ev.weaknesses&&ev.weaknesses.length?ev.weaknesses.map(w=>`<div class="step"><em style="background:var(--warn)">!</em><div><b style="font-weight:600">${esc(w)}</b></div></div>`).join(""):'<div class="mut">Nothing was flagged for this review.</div>'}
+ ${top?`<h3 style="margin-top:16px">Top idea</h3><div class="ser" style="font-size:15px;line-height:1.45">“${esc(top.hypothesis)}”</div>${nv&&nv.checked?`<span class="chip ${nv.is_close_match?"w":"g"}" style="margin-top:10px">${nv.is_close_match?"possible overlap":"no close match found"}</span>`:""}`:""}</div></div>
+ <h3 style="margin:20px 0 10px">Themes at a glance</h3><div class="row">${ids.map((k,i)=>{const t=th[k];return `<div class="card" style="flex:1;padding:14px 16px"><b class="sm" style="color:var(--blue)">THEME ${i+1} · ${pl(t.paper_count,"paper")}</b><div class="ser sm" style="margin-top:5px;line-height:1.4">${esc(((t.summary_sentences||[])[0]||"").slice(0,125))}…</div></div>`}).join("")}</div>`;
+ $("#p-th").innerHTML=ids.map((k,i)=>{const t=th[k];return `<div class="card" style="margin-bottom:14px"><h3>Theme ${i+1} <span class="sm mut" style="font-family:Inter,sans-serif;font-weight:500">(${pl(t.paper_count,"paper")})</span></h3><ul style="padding-left:20px">${(t.summary_sentences||[]).map(s=>`<li style="margin-bottom:6px">${esc(s)}</li>`).join("")}</ul></div>`}).join("")+((r.gaps||[]).length?`<div class="card"><h3>Gaps the papers mention</h3><ul style="padding-left:20px">${r.gaps.map(g=>`<li style="margin-bottom:6px">${esc(g)}</li>`).join("")}</ul></div>`:"");
+ const sp2={};(sp?sp.per_hypothesis:[]).forEach(p=>sp2[p.id]=p);
+ $("#p-id").innerHTML=`<div class="card">${(r.hypotheses||[]).map(h=>{const n=(r.novelty_check||[]).find(x=>x.hypothesis_id===h.id),s=sp2[h.id];return `<div class="hyp"><b class="sm mut">${esc(h.id)}</b><div class="tx">${esc(h.hypothesis)}</div>${n&&n.checked&&n.best_match_title?`<div class="sm" style="margin-top:8px"><span class="chip ${n.is_close_match?"w":"g"}">${n.is_close_match?"possible overlap":"no close match found"}</span> closest paper: “${esc(n.best_match_title)}” (${esc(n.best_match_year)}), similarity ${esc(n.similarity)}</div>`:""}${s?`<div class="sm mut" style="margin-top:6px">Specificity ${f2(s.score)} · ${s.label}${s.notes.length?" · "+esc(s.notes.join("; ")):""}</div>`:""}</div>`}).join("")||'<div class="mut">No ideas were generated.</div>'}</div>`;
+ $("#p-pa").innerHTML=`<div class="card">${(r.papers||[]).map(p=>{const l=safe(p.landing_page_url||p.doi);return `<div style="padding:12px 0;border-bottom:1px solid var(--line)">${l?`<a class="lnk" href="${esc(l)}" target="_blank" rel="noopener noreferrer">${esc(p.title)}</a>`:`<span class="ser" style="font-weight:700;font-size:16px">${esc(p.title)}</span> <span class="sm mut">(no link available)</span>`}<div class="sm mut">${esc((p.authors||[]).slice(0,3).join(", "))}${(p.authors||[]).length>3?" et al.":""} · ${p.year||"n.d."} · ${p.cited_by_count??0} citations${p.is_oa?' · <b style="color:var(--ok)">open access</b>':""}</div></div>`}).join("")}</div>`;
+ $("#p-qu").innerHTML=ev&&ev.overall?`<div class="card"><h3>How the score was worked out</h3><dl class="how">${(ev.how_scored||[]).map(i=>`<dt>${esc(i.term)}</dt><dd>${esc(i.text)}</dd>`).join("")}</dl>${cv&&cv.top_terms.length?`<details open><summary>Key terms the coverage score looks for</summary><div style="margin-top:10px">${cv.terms_covered.map(t=>`<span class="chip g">${esc(t)}</span>`).join("")}${cv.terms_missing.map(t=>`<span class="chip r">${esc(t)}</span>`).join("")}</div><div class="sm mut">Green = mentioned in the summary · red = missing</div></details>`:""}</div>`:'<div class="card mut">No quality report is available for this review.</div>';
+ show("res")}
+
+/* ---------- history ---------- */
+async function loadHist(){try{hist=(await (await fetch("/api/history")).json()).history||[]}catch(e){hist=[]}picks=picks.filter(id=>hist.some(h=>h.id===id));drawHist()}
+function drawHist(){const q=$("#hq").value.trim().toLowerCase(),L=hist.filter(h=>!q||(h.topic+" "+(h.settings_label||"")).toLowerCase().includes(q));
+ $("#hmsg").textContent=hist.length?pl(hist.length,"saved search","saved searches"):"";
+ $("#hlist").innerHTML=L.length?L.map(h=>{const s=h.summary||{},sel=picks.includes(h.id),q2=s.evaluation_overall;return `<div class="card hrow ${sel?"sel":""}" data-id="${esc(h.id)}"><div class="ck" data-a="pick" title="Select for comparison">${sel?"✓":""}</div><div style="flex:1;min-width:0"><div class="ser" style="font-size:18px;font-weight:700;color:var(--bd)">${esc(h.topic)}</div><div class="sm mut">${esc(fd(h.saved_at))} · ${esc(h.settings_label||"")}</div></div><div class="sm mut" style="width:170px">${pl(s.num_papers||0,"paper")} · ${pl(s.num_themes||0,"theme")}</div>${q2!=null?`<span class="chip ${lab(s.evaluation_label)}" style="width:112px;text-align:center">quality ${f2(q2)}</span>`:'<span style="width:112px"></span>'}<button class="btn o" data-a="open" style="padding:7px 18px;font-size:14px">Open</button><button class="chip" data-a="del" style="width:62px;text-align:center;background:none;color:var(--mut)">Delete</button></div>`}).join(""):`<div class="card mut">${hist.length?"No saved search matches your filter.":"No saved searches yet. Run a review and it will appear here automatically."}</div>`;
+ const n=picks.length;$("#cbar").hidden=n<1;if(n){$("#cn").textContent=n===2?"2 searches selected":"1 search selected — tick one more";$("#ct").textContent=picks.map((id,i)=>(i?"B: ":"A: ")+(hist.find(h=>h.id===id)||{}).topic).join("   ·   ");$("#cgo").disabled=n!==2}}
+$("#hq").oninput=drawHist;
+$("#hlist").onclick=async e=>{const b=e.target.closest("[data-a]");if(!b)return;const id=b.closest(".hrow").dataset.id,a=b.dataset.a;
+ if(a==="pick"){picks.includes(id)?picks=picks.filter(x=>x!==id):(picks.length===2&&picks.shift(),picks.push(id));drawHist()}
+ else if(a==="open"){const r=await fetch(`/api/history/${encodeURIComponent(id)}/open`,{method:"POST"}),d=await r.json();if(!r.ok){$("#hmsg").textContent=d.error||"Could not open it.";return}
+  S={...DEF,...(d.report.settings||{})};$("#topic").value=d.report.topic;paint(Object.fromEntries(STG.map(([k])=>[k,{status:"done",message:"Loaded"}])));err("");render(d.report);$("#rc").innerHTML+=`<span class="chip w">Saved ${esc(fd(d.saved_at))}</span>`}
+ else if(a==="del"){if(b.dataset.arm){await fetch(`/api/history/${encodeURIComponent(id)}`,{method:"DELETE"});loadHist()}else{b.dataset.arm=1;b.textContent="Sure?";b.style.color="var(--bad)";setTimeout(()=>{b.dataset.arm="";b.textContent="Delete";b.style.color=""},3000)}}};
+$("#hclear").onclick=async()=>{const b=$("#hclear");if(b.dataset.arm){await fetch("/api/history",{method:"DELETE"});b.dataset.arm="";b.textContent="Clear all history";picks=[];loadHist()}else{b.dataset.arm=1;b.textContent="Click again to confirm";setTimeout(()=>{b.dataset.arm="";b.textContent="Clear all history"},3000)}};
+
+/* ---------- comparison ---------- */
+$("#cgo").onclick=async()=>{const r=await fetch("/api/compare",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({a:picks[0],b:picks[1]})}),d=await r.json();if(!r.ok){$("#hmsg").textContent=d.error||"Could not compare.";return}drawCmp(d);show("cmp")};
+function drawCmp(d){const c=d.comparison,A=c.a,B=c.b,T=c.themes,P=c.papers,K=c.key_terms;const row=(l,a,b)=>`<tr><td>${l}</td><td><b>${a??"not recorded"}</b></td><td><b>${b??"not recorded"}</b></td></tr>`;
+ const yr=s=>s.year_min==null?null:s.year_min===s.year_max?s.year_min:s.year_min+"–"+s.year_max,sc=v=>v==null?null:f2(v);
+ const heat=T.a_ids.length&&T.b_ids.length?`<table><tr><th></th>${T.b_ids.map(i=>`<th style="color:var(--b2)">B${i}</th>`).join("")}</tr>${T.matrix.map((r,i)=>`<tr><th style="color:var(--blue);border:0">A${T.a_ids[i]}</th>${r.map(v=>{const a=Math.max(0,Math.min(1,v));return `<td style="background:rgba(34,97,146,${(.1+a*.9).toFixed(2)});color:${a>.45?"#fff":"#1F2A36"};text-align:center;font-weight:700;border-radius:6px;border:3px solid var(--card)">${v.toFixed(2)}</td>`}).join("")}</tr>`).join("")}</table><div class="sm mut" style="margin-top:8px">Darker blue = more similar. Below ${T.thresholds.related} means “different subject”.</div>`:'<div class="mut">One of the searches has no themes to compare.</div>';
+ const chips=(a,s)=>a.length?a.map(t=>`<span class="chip" ${s||""}>${esc(t)}</span>`).join(""):'<span class="sm mut">none</span>';
+ $("#cbody").innerHTML=`<div class="row" style="margin-bottom:14px">${[["A",d.a,"var(--blue)"],["B",d.b,"var(--b2)"]].map(([l,x,col])=>`<div class="card col" style="border-top:5px solid ${col}"><b class="sm" style="color:${col}">SEARCH ${l}</b><div class="ser" style="font-size:21px;font-weight:700;color:var(--bd)">${esc(x.topic)}</div><div class="sm mut">${esc(fd(x.saved_at))} · ${esc(x.settings_label||"")}</div></div>`).join("")}</div>
+ <div class="card" style="margin-bottom:14px;background:var(--tint);border-color:#C3D4E2"><b>In plain words:</b> ${c.summary.map(esc).join(" ")}</div>
+ <div class="row"><div class="card col"><h3>Headline numbers</h3><table><tr><th></th><th style="color:var(--blue)">A</th><th style="color:var(--b2)">B</th></tr>${row("Papers read",A.num_papers,B.num_papers)}${row("Themes",A.num_themes,B.num_themes)}${row("Years covered",yr(A),yr(B))}${row("Quality score",sc(A.evaluation_overall),sc(B.evaluation_overall))}${row("Coverage",sc(A.evaluation_coverage),sc(B.evaluation_coverage))}${row("Idea specificity",sc(A.evaluation_specificity),sc(B.evaluation_specificity))}${row("Possible overlaps",A.num_close_matches,B.num_close_matches)}</table></div>
+ <div class="card col" style="flex:1.1"><h3>Do the themes match?</h3>${heat}</div></div>
+ <div class="row" style="margin-top:14px"><div class="card col"><h3>Shared papers</h3><div style="display:flex;height:30px;border-radius:8px;overflow:hidden;font-weight:700;font-size:13px;color:#fff"><div style="flex:${P.count_a-P.shared_count||0.001};background:var(--blue);text-align:center;line-height:30px">A only: ${P.count_a-P.shared_count}</div>${P.shared_count?`<div style="flex:${P.shared_count};background:var(--bd);text-align:center;line-height:30px">both: ${P.shared_count}</div>`:""}<div style="flex:${P.count_b-P.shared_count||0.001};background:var(--b2);text-align:center;line-height:30px">B only: ${P.count_b-P.shared_count}</div></div><div class="sm mut" style="margin-top:8px">${P.shared_count?pl(P.shared_count,"paper")+" appear in both searches.":"No paper appears in both searches."}</div></div>
+ <div class="card col"><h3>Key terms</h3><div class="sm mut" style="margin-bottom:6px">Only in A</div>${chips(K.only_a)}<div class="sm mut" style="margin:8px 0 6px">Only in B</div>${chips(K.only_b,'style="background:#F1DFD4;color:#7A3A1C"')}<div class="sm mut" style="margin:8px 0 6px">In both</div>${chips(K.shared,'style="background:#DCEBE1;color:#2B5C40"')}</div></div>
+ <details class="card" style="margin-top:14px"><summary>How to read this comparison</summary><dl class="how">${c.how_to_read.map(i=>`<dt>${esc(i.term)}</dt><dd>${esc(i.text)}</dd>`).join("")}</dl></details>`}
+show("new");
+</script></body></html>

@@ -1,0 +1,14 @@
+{
+  "num_topics_tested": 10,
+  "corruption_rate_used": 0.4,
+  "mean_condition_a_support_ratio": 0.617,
+  "mean_condition_b_support_ratio": 0.975,
+  "mean_improvement_b_over_a": 0.358,
+  "topics_where_b_improved_over_a": 9,
+  "topics_converged_within_max_iterations": 10,
+  "mean_iterations_used": 1.9,
+  "mean_discrimination_accuracy": 0.925,
+  "mean_discrimination_precision": 1.0,
+  "mean_discrimination_recall": 0.85,
+  "mean_discrimination_f1": 0.916
+}
